@@ -1,0 +1,57 @@
+# Local infra for the sandbox. Not hardened for anything but a laptop.
+# Usage: docker compose -f docker/docker-compose.yml up -d
+name: ai-security-sandbox
+
+services:
+  redis:
+    image: redis:7.4-alpine
+    # appendonly so token-bucket / cost state survives a restart during a test run.
+    # maxmemory + noeviction: we want writes to *fail loudly* rather than silently
+    # evict rate-limit keys (which would open a bypass window).
+    command: >
+      redis-server
+      --appendonly yes
+      --maxmemory 256mb
+      --maxmemory-policy noeviction
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  qdrant:
+    image: qdrant/qdrant:v1.12.1
+    ports:
+      - "6333:6333"   # HTTP / REST
+      - "6334:6334"   # gRPC
+    volumes:
+      - qdrant-data:/qdrant/storage
+    environment:
+      QDRANT__SERVICE__ENABLE_TLS: "false"
+      # Set an API key here and in .env to exercise authenticated-client paths.
+      # QDRANT__SERVICE__API_KEY: "local-dev-key"
+    healthcheck:
+      # Qdrant images are distroless (no shell/curl); use the built-in TCP probe.
+      test: ["CMD", "/qdrant/qdrant", "--version"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  # Optional: uncomment to eyeball Redis state while debugging limiter races.
+  # redis-commander:
+  #   image: rediscommander/redis-commander:latest
+  #   environment:
+  #     REDIS_HOSTS: "local:redis:6379"
+  #   ports:
+  #     - "8081:8081"
+  #   depends_on:
+  #     redis:
+  #       condition: service_healthy
+
+volumes:
+  redis-data:
+  qdrant-data:
