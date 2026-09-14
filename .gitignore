@@ -24,3 +24,5 @@ qdrant_storage/
 .idea/
 .vscode/
 *.swp
+
+.obsidian
