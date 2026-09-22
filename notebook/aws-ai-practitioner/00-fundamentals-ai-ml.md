@@ -199,3 +199,38 @@
 	- MLOps pipelines automatically handle testing, validation, and deployment of updated models into production.
 	- MLOps can monitor the model in production to track performance
 	- Metrics such as response time and accuracy are tracked to ensure that the model meets the requirements
+
+
+## AWS Managed AI/ML Services and Applications
+
+- **Amazon Rekognition**: Helps computers "see" and make sense of images and videos using ML.
+- **Amazon Textract**: Automatically extracts any form of text from:
+	- Scanned forms
+	- Images
+	- Tables and grids
+- **Amazon Comprehend**: Natural language processing (NLP) service; can break down text via:
+	- *Tokenization* splits sentences into individual words or phrases called *tokens*
+	- *Parts of Speech* (PoS) figures out what role each word plays in a sentence
+
+## AWS SageMaker
+- A fully managed service for developers and data scientists
+- Enables users to prepare, build, train, tune, and deploy ML models from scratch
+- It supports version control
+- It supports supervised, unsupervised, reinforcement, and deep learning
+- Comprehensive toolbox for ML
+	- It offers an IDE
+	- A one-stop shop for building, training, and deploying ML models
+		- Notebooks
+		- Canvas
+		- Data preparation and visualization
+		- Collaboration tools
+- ML Workflows
+	- Designed to orchestrate and automate the entire machine learning workflow, from data preparation to model deployment
+	- Supports versioning and tracking
+	- Allows you to define and manage the steps involved in building, training, evaluation, and deployment
+	- You can integrate AutoML as a step
+		- Automates the model selection and hyperparameter tuning process
+		- Allows you to quickly generate a model with minimal manual intervention
+			- You upload your data
+			- Specify the target variable (e.g., Is_Spam)
+			- AutoML handles the rest
